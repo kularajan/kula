@@ -1,54 +1,35 @@
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
+  
+  let fixture:ComponentFixture<AppComponent>;
+  let componentInstance: AppComponent;
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
         AppComponent
       ],
     }).compileComponents();
+    fixture = TestBed.createComponent(AppComponent);
+    componentInstance = fixture.componentInstance;
   });
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
-  });
+  it('App Available', () => {
+    expect(componentInstance).toBeTruthy();
+  });  
 
-  xit(`should have as title 'kula'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('kula');
-  });
-
-  xit('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
+  it ('Check Input less than 0', () => {
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('kula app is running!');
+    fixture.whenStable().then(() => {
+      const element: HTMLInputElement = fixture.debugElement.nativeElement.querySelector('#inputNumber');
+      element.valueAsNumber=-1;
+      element.dispatchEvent(new Event('keyup'));
+      //const keyUpSpyon = spyOn(componentInstance,"ValidateEntry").and.callThrough();  
+      //expect(keyUpSpyon).toHaveBeenCalled();
+      expect(componentInstance.isError).toEqual(false);
+    });
+   
   });
-
-
-});
-
-describe('Custom Tests',() =>{
-  it('should show controls and Validations',()=>{
-    const fixture = TestBed.createComponent(AppComponent);
-    let inputBox = fixture.nativeElement.querySelector('[data-test="input-number"]');
-    let listControl = fixture.nativeElement.querySelector('[data-test="list"]');
-    let previousButton = fixture.nativeElement.querySelector('[data-test="previous-button"]');
-    let nextButton = fixture.nativeElement.querySelector('[data-test="next-button"]');
-    
-    expect(inputBox).toBeTruthy();
-    expect(listControl).toBeTruthy();
-    expect(nextButton).toBeTruthy();
-    expect(previousButton).toBeTruthy();
-
-    expect(previousButton.textContent.trim()).toBe('Previous');
-    expect(nextButton.textContent.trim()).toBe('Next');
-    
-  })
-
-
 })

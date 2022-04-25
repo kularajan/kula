@@ -1,3 +1,24 @@
-<div>Input Number: <input data-test="input-number" type="text" (keypress)="OnlyNumbersAllowed($event)" min="1" max="200"></div>
-<div data-test="list">List</div>
-<div><button data-test="previous-button">Previous</button><button data-test="next-button">Next</button></div>
+<div>
+  <label>Input Positive Number:</label>
+  
+  <input id="inputNumber" type="number" (keydown)="OnlyNumbersAllowed($event)" (keyup)="ValidateEntry($event)"
+    (change)="ValidateEntry($event)" min="1" max="200" step="1">
+  
+  <div id="errorMessage" *ngIf="isError" [ngStyle]="{'color': 'red'}" >Entered value must be between 1 and 200</div>
+  
+  <div id = "itemList" *ngIf="!isError">
+
+    <div *ngFor="let item of numItemArray; let index = index">
+      <div *ngIf="allowToShow(item)">
+        <span *ngIf="item.isOther">{{item.id}}</span>
+        <span *ngIf="item.isWalker" [ngStyle]="{'color': 'green'}">walker{{dayIndex}} </span>
+        <span *ngIf="item.isAssessment" [ngStyle]="{'color': 'red'}">assessment{{dayIndex}}</span>
+      </div>
+    </div>
+
+    <button id="previousButton" (click)="callPreviousList()" *ngIf="showPreviousPaging()" > previous 20 </button>
+    <button id="nextButton" (click)="callNextList()" *ngIf="showNextPaging()"> next 20 </button>
+
+  </div>
+  
+</div>
